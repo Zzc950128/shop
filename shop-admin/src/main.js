@@ -1,12 +1,24 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
 import router from './router'
 
+import ElementUI from 'element-ui';
+import VueQuillEditor from 'vue-quill-editor'
+// import { ImageResize } from 'quill-image-resize-module';
+import md5 from 'js-md5';
+
+import 'element-ui/lib/theme-chalk/index.css';
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+// VueQuillEditor.register('modules/imageResize', ImageResize);
+Vue.use(ElementUI);
+Vue.use(VueQuillEditor)
+Vue.prototype.$md5 = md5
+
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
