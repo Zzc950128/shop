@@ -1,3 +1,6 @@
 const router = require('koa-router')()
 const controllers = require('../controllers')
-// ctx.cookies.set('test', 'hello', {httpOnly: false});
+router.get('/', controllers.default)
+router.get('/test', controllers.test)
+router.get('/login', controllers.login)
+module.exports = router

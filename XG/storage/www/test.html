@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#iframe {
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+</head>
+<body>
+	<iframe id="iframe" name="iframe" src="https://www.baidu.com" frameborder="0"></iframe>
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script>
+	setTimeout(function() {
+		// var element = document.getElementsByClassName("mnav")
+		// console.log(element)
+		// $("#iframe").contents().find(".mnav").remove();
+		window.frames["iframe"].document.getElementById("u1").style.display = "none";
+	}, 2000)
+</script>
+</html>

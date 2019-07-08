@@ -1,0 +1,115 @@
+#配置log格式
+log_format main '$remote_addr - $remote_user [$time_local] '
+                '"$request" $status "$http_referer" '
+                '$http_user_agent $http_x_forwarded_for $request_time';
+log_format api '$remote_addr - $remote_user [$time_local] '
+                 '"$request" $status "$http_referer" '
+                 '$http_user_agent $http_x_forwarded_for $request_time '
+                 '$upstream_addr $upstream_response_time $upstream_status';
+#配置nginx + nodejs
+upstream myproxy {
+        server 127.0.0.1:3000;
+        server 127.0.0.1:3001;
+        server 127.0.0.1:3002;
+}
+#配置子域
+server {
+	listen 80 default_server;
+
+	# listen 443 ssl default_server;
+	# listen [::]:443 ssl default_server;
+
+	server_name zhangzhicong.xyz luchyboy.xyz www.zhangzhicong.xyz www.luckyboy.xyz;
+	root /storage/www;
+	
+	access_log /storage/log/waccess.log main;
+	error_log /storage/log/werror.log;
+
+	location ~ \.php$ {
+		include snippets/fastcgi-php.conf;
+		fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+		fastcgi_param HTTP_X_FORWARDED_FOR $http_x_forwarded_for;
+	}
+
+	location / {
+		index index.html index.php;
+		try_files $uri $uri/ @router;
+	}
+
+	location @router {
+                rewrite ^.*$ /index.html last;
+        }
+
+}
+
+server {
+	listen 80;
+
+	server_name api.zhangzhicong.xyz api.luckyboy.xyz;
+	root /storage/api;
+
+	access_log /storage/log/aaccess.log api;
+        error_log /storage/log/aerror.log;	
+
+	location / {
+		proxy_redirect off;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header Host $http_host;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_pass http://myproxy;
+	}
+}
+
+server {
+	listen 80;
+
+        server_name zzc.zhangzhicong.xyz zzc.luckyboy.xyz;
+        root /storage/zzc;
+	
+	access_log /storage/log/zaccess.log;
+        error_log /storage/log/zerror.log;
+
+	location ~ \.php$ {
+                include snippets/fastcgi-php.conf;
+                fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+                fastcgi_param HTTP_X_FORWARDED_FOR $http_x_forwarded_for;
+        }
+	
+	location / {
+		index index.html;
+		try_files $uri $uri/ @router;
+	}
+	
+	location @router {
+		rewrite ^.*$ /index.html last;
+	}
+}
+
+server {
+	listen 80;
+	server_name sec.zhangzhicong.xyz;
+	return 301 https://$server_name$request_uri;
+}
+server {
+	listen 443 ssl;
+	
+	ssl_certificate /etc/letsencrypt/live/sec.zhangzhicong.xyz/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/sec.zhangzhicong.xyz/privkey.pem;
+	include /etc/letsencrypt/options-ssl-nginx.conf;
+	ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+	server_name sec.zhangzhicong.xyz;
+	root /storage/sec;
+
+	access_log /storage/log/saccess.log;
+        error_log /storage/log/serror.log;
+
+        location / {
+                index index.html;
+                try_files $uri $uri/ @router;
+        }
+
+        location @router {
+                rewrite ^.*$ /index.html last;
+        }
+}

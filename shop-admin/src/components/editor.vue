@@ -66,13 +66,13 @@
 								}
 							}
 						},
-						// imageResize: {
-						// 	displayStyles: {
-						// 		backgroundColor: 'black',
-						// 		border: 'none',
-						// 		color: 'white'
-						// 	},
-						// }
+						imageResize: {
+							displayStyles: {
+								backgroundColor: 'black',
+								border: 'none',
+								color: 'white'
+							},
+						}
 					}
 				},
 			}
