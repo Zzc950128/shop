@@ -1,9 +1,39 @@
 [
   {
     "type": "get",
+    "url": "/api/test",
+    "title": "测试接口",
+    "name": "Test",
+    "group": "Test",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回測試數據.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "成功示例:",
+          "content": "{\n  \"data\": \"测试成功\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "controllers/test.js",
+    "groupTitle": "Test"
+  },
+  {
+    "type": "get",
     "url": "/api/user/:id",
     "title": "获取用户信息",
-    "name": "GetUser",
+    "name": "GetUserInfo",
     "group": "User",
     "parameter": {
       "fields": {
@@ -33,7 +63,7 @@
       "examples": [
         {
           "title": "成功示例:",
-          "content": "{\n  \"name\": \"John\"\n}",
+          "content": "{\n  \"name\": \"Zzc\"\n}",
           "type": "json"
         }
       ]

@@ -1,5 +1,5 @@
 <template>
-	<div class="editor">
+	<div class="editor-component">
 		<el-upload
             class="uploader"
             ref="uploader"
@@ -28,7 +28,7 @@
 	import { uploadFile } from "@/api/upload"
 
 	export default {
-		name: "editor",
+		name: "editor-component",
 		props: {
 			content: {
 	            type: String,

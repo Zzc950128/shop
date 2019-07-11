@@ -4,7 +4,7 @@ module.exports = async (ctx, next) => {
 		ctx.body = {
 			code: -1,
 			data: {
-				result: "请输入用户名!"
+				msg: "请输入用户名!"
 			}
 		}
 		return
@@ -13,7 +13,7 @@ module.exports = async (ctx, next) => {
 		ctx.body = {
 			code: -1,
 			data: {
-				result: "请输入密码!"
+				msg: "请输入密码!"
 			}
 		}
 		return
@@ -25,14 +25,14 @@ module.exports = async (ctx, next) => {
 		ctx.body = {
 			code: 0,
 			data: {
-				result: "登陆成功 " + ctx.session.username
+				data: "登陆成功 " + ctx.session.username
 			}
 		}
 	}else {
 		ctx.body = {
 			code: -1,
 			data: {
-				result: "密码不正确!"
+				msg: "密码不正确!"
 			}
 		}
 	}
