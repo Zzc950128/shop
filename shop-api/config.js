@@ -12,6 +12,7 @@ const CONF = {
 	compressConfig: {
 		threshold: 2048
 	},
+	db: 'mongodb://localhost:27017/admin',
 }
 
 module.exports = CONF

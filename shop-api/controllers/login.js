@@ -1,38 +1,67 @@
+/**
+ * @api {post} /api/login 用户登录
+ * @apiName Login
+ * @apiGroup Sys
+ * @apiParam {String} username 用户名.
+ * @apiParam {String} password 密码.
+ * @apiSuccess {String} data 成功提示.
+ * @apiSuccessExample 成功示例:
+ *     {
+ *       "data": "登陆成功"
+ *     }
+ */
+const { getAllUserInfo } = require("../db/user")
 module.exports = async (ctx, next) => {
 	let query = ctx.request.query
-	if(!query.id) {
+	if(!query.username) {
 		ctx.body = {
-			code: -1,
+			code: -2,
 			data: {
 				msg: "请输入用户名!"
 			}
 		}
 		return
 	}
-	if(!query.psd) {
+	if(!query.password) {
 		ctx.body = {
-			code: -1,
+			code: -2,
 			data: {
 				msg: "请输入密码!"
 			}
 		}
 		return
 	}
-	if(query.id == "123456" && query.psd == "123456") {
-		ctx.session.id = "123456"
-		ctx.session.username = "zzc"
-		ctx.cookies.set('id', ctx.session.id, { httpOnly: false });
+	const userInfo = await getAllUserInfo()
+	let flag = false
+	let curUserInfo = {}
+	userInfo.forEach(item => {
+		if(query.username == item.name && query.password == item.password) {
+			flag = true
+			curUserInfo = item
+		}
+	})
+	if(flag) {
+		let id = curUserInfo.name + (+new Date())
+		if(!ctx.session.user) {
+			ctx.session.user = []
+		}
+		ctx.session.user.push({
+			sessionId: id,
+			id: curUserInfo.id,
+			name: curUserInfo.username,
+		})
+		ctx.cookies.set('SESSIONID', id, { httpOnly: false });
 		ctx.body = {
 			code: 0,
 			data: {
-				data: "登陆成功 " + ctx.session.username
+				data: "登陆成功"
 			}
 		}
 	}else {
 		ctx.body = {
-			code: -1,
+			code: -3,
 			data: {
-				msg: "密码不正确!"
+				msg: "账号名或密码不正确!"
 			}
 		}
 	}

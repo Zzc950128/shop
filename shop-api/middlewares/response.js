@@ -1,6 +1,15 @@
 module.exports = async function(ctx, next) {
-	if((ctx.cookies.get('id') && ctx.session.id && ctx.cookies.get('id') === ctx.session.id) || ctx.request.path == "/login") {
-		next()
+	let user = ctx.session.user
+	let flag = false
+	if(user) {
+		user.forEach(item => {
+			if(item.sessionId == ctx.cookies.get('SESSIONID')) {
+				flag = true
+			}
+		})
+	}
+	if(flag || ctx.path == "/api/login" || ctx.path == "/api/test") {
+		await next()
 	}else {
 		ctx.body = {
 			code: -1,

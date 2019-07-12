@@ -9,6 +9,11 @@
  * fs.statSync 提供有关文件的信息，回调有两个参数 (err, stats)
  * fs.stats.isDirectory 是否是文件系统目录
  */
+
+// -1 未登錄
+// -2 缺少參數
+// -3 操作失敗
+
 const fs = require('fs')
 const path = require('path')
 
