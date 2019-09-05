@@ -3,6 +3,7 @@
  * @apiName GetUserInfo
  * @apiGroup User
  * @apiParam {Number} id 用户ID.
+ * @apiParam {String} username 用户姓名.
  * @apiSuccess {String} name 用户姓名.
  * @apiSuccess {String} roles 用户角色.
  * @apiSuccess {String} rolesAlias 用户角色别名.
@@ -36,7 +37,7 @@
  *     }
  */
 /**
- * @api {post} /api/user/register 获取所有用户信息
+ * @api {post} /api/user/register 用户注册
  * @apiName registerUser
  * @apiGroup User
  * @apiParam {String} username 用户名.
@@ -52,17 +53,25 @@ const { aseEncode } = require("../utils/tools.js")
 const { getUserInfo, getAllUserInfo, registerUser } = require("../db/user")
 module.exports.get = async (ctx, next) => {
 	let id = ctx.query.id
-	if(!id) {
+	let username = ctx.query.username
+	let query = {}
+	if(!id && !username) {
 		id = ctx.session.id
 	}
-	if(!id) {
+	if(!id && !username) {
 		ctx.body = {
 			code: -2,
-			msg: "缺少用户id"
+			msg: "缺少查询信息"
 		}
 		return
 	}
-	let userInfo = await getUserInfo({id: id})
+	if(id) {
+		query.id = id
+	}
+	if(username) {
+		query.username = username
+	}
+	let userInfo = await getUserInfo(query)
 	if(userInfo.length == 0) {
 		ctx.body = {
 			code: -3,
