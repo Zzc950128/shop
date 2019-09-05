@@ -14,3 +14,15 @@ module.exports.getRolesInfo = function() {
 		})
 	})
 }
+module.exports.getPermission = function(roleAlias) {
+	return new Promise(function(resolve, reject) {
+		connect(MongoClient, DB_CONN, selectData, {
+			collection: "roles",
+			query: { role: roleAlias },
+			callback: function(result, db) {
+				db.close()
+				resolve(result)
+			}
+		})
+	})
+}

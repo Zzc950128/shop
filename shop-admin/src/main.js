@@ -1,13 +1,16 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store'
 
 import ElementUI from 'element-ui';
 import VueQuillEditor, { Quill } from 'vue-quill-editor'
 import ImageResize from 'quill-image-resize-module'
 import md5 from 'js-md5';
 import CKEditor from '@ckeditor/ckeditor5-vue';
+import "@/permission.js"
 
+import '@/styles/reset.css'
 import 'element-ui/lib/theme-chalk/index.css';
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
@@ -24,6 +27,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

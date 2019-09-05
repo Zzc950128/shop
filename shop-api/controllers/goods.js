@@ -7,16 +7,16 @@
  * @apiSuccess {String} data 商品信息.
  * @apiSuccessExample 成功示例:
  *     {
- *       "data": "商品信息"
+ *       "goodsInfo": "商品信息"
  *     }
  */
 const { getGoodsInfo } = require("../db/goods")
 module.exports.get = async (ctx, next) => {
 	const goodsInfo = await getGoodsInfo()
 	ctx.body = {
-		code: 1,
+		code: 0,
 		data: {
-			data: goodsInfo
+			goodsInfo: goodsInfo
 		}
 	}
 }

@@ -7,7 +7,7 @@
  * @apiSuccess {String} alias 角色别名.
  * @apiSuccessExample 成功示例:
  *     {
- *       [
+ *       "rolesInfo": [
  *       	{
  *       		id: "1",
  *       		role: "superAdmin",
@@ -20,9 +20,9 @@ const { getRolesInfo } = require("../db/roles")
 module.exports.get = async (ctx, next) => {
 	let rolesInfo = await getRolesInfo()
 	ctx.body = {
-		code: 1,
+		code: 0,
 		data: {
-			data: rolesInfo
+			rolesInfo: rolesInfo
 		}
 	}
 }

@@ -14,3 +14,17 @@ module.exports.getMenusInfo = function() {
 		})
 	})
 }
+module.exports.getMenu = function(router) {
+	return new Promise(function(resolve, reject) {
+		connect(MongoClient, DB_CONN, selectData, {
+			collection: "menus",
+			query: {
+				router: router
+			},
+			callback: function(result, db) {
+				db.close()
+				resolve(result)
+			}
+		})
+	})
+}

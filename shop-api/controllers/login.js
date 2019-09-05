@@ -7,27 +7,24 @@
  * @apiSuccess {String} data 成功提示.
  * @apiSuccessExample 成功示例:
  *     {
- *       "data": "登陆成功"
+ *       "msg": "登陆成功"
  *     }
  */
+const { aseEncode } = require("../utils/tools.js")
 const { getAllUserInfo } = require("../db/user")
 module.exports = async (ctx, next) => {
-	let query = ctx.request.query
+	let query = ctx.request.body
 	if(!query.username) {
 		ctx.body = {
 			code: -2,
-			data: {
-				msg: "请输入用户名!"
-			}
+			msg: "请输入用户名!"
 		}
 		return
 	}
 	if(!query.password) {
 		ctx.body = {
 			code: -2,
-			data: {
-				msg: "请输入密码!"
-			}
+			msg: "请输入密码!"
 		}
 		return
 	}
@@ -35,34 +32,25 @@ module.exports = async (ctx, next) => {
 	let flag = false
 	let curUserInfo = {}
 	userInfo.forEach(item => {
-		if(query.username == item.name && query.password == item.password) {
+		if(query.username == item.username && query.password == item.password) {
 			flag = true
 			curUserInfo = item
 		}
 	})
 	if(flag) {
-		let id = curUserInfo.name + (+new Date())
-		if(!ctx.session.user) {
-			ctx.session.user = []
-		}
-		ctx.session.user.push({
-			sessionId: id,
-			id: curUserInfo.id,
-			name: curUserInfo.username,
-		})
-		ctx.cookies.set('SESSIONID', id, { httpOnly: false });
+		let token = aseEncode((curUserInfo.username + "," + curUserInfo.id + "," + (+new Date())), "shop-token")
+		ctx.session.id = curUserInfo.id
+		ctx.session.user = curUserInfo
+		ctx.session.token = token
+		ctx.cookies.set('token', token, { httpOnly: true });
 		ctx.body = {
 			code: 0,
-			data: {
-				data: "登陆成功"
-			}
+			msg: "登陆成功"
 		}
 	}else {
 		ctx.body = {
 			code: -3,
-			data: {
-				msg: "账号名或密码不正确!"
-			}
+			msg: "账号名或密码不正确!"
 		}
 	}
 }

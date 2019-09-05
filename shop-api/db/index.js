@@ -18,6 +18,7 @@ module.exports.insertData = function(db, others) {
 	collection.insert(data, function (err, result) {
 		if (err) {
 			console.log('Error:' + err);
+			// others.errCallback(err, db);
 			return;
 		}
 		others.callback(result, db);
@@ -28,13 +29,31 @@ module.exports.selectData = function(db, others) {
 	const mydb = db.db('admin');
 	let collection = mydb.collection(others.collection)
 	let query = others.query
-	collection.find(query).toArray(function (err, result) {
-		if (err) {
-		  console.log('Error:' + err);
-		  return;
-		}
-		others.callback(result, db);
-	});
+	let queryCondition = {}
+	if(others.skip) {
+		queryCondition.skip = others.skip
+	}
+	if(others.limit) {
+		queryCondition.limit = others.limit
+	}
+	// console.log("others.count", others.count)
+	if(others.count == "true") {
+		collection.find(query).count(function (err, result) {
+			if (err) {
+			  console.log('Error:' + err);
+			  return;
+			}
+			others.callback(result, db);
+		});
+	}else {
+		collection.find(query, queryCondition).toArray(function (err, result) {
+			if (err) {
+			  console.log('Error:' + err);
+			  return;
+			}
+			others.callback(result, db);
+		});
+	}
 }
 // collection,query,data,callback
 module.exports.updateData = function(db, others) {

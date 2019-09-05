@@ -9,7 +9,7 @@ log4js.configure({
       pattern: '-yyyy-MM-dd.log', // 通过日期来生成文件
       alwaysIncludePattern: true, // 文件名始终以日期区分
       encoding:"utf-8",
-      filename: path.join('../logs/', 'access.log') // 生成文件路径和文件名
+      filename: path.join('/logs/', 'access.log') // 生成文件路径和文件名
     },
     //系统日志
     application: {
@@ -17,7 +17,7 @@ log4js.configure({
       pattern: '-yyyy-MM-dd.log', // 通过日期来生成文件
       alwaysIncludePattern: true, // 文件名始终以日期区分
       encoding:"utf-8",
-      filename: path.join('../logs/', 'application.log') // 生成文件路径和文件名
+      filename: path.join('/logs/', 'application.log') // 生成文件路径和文件名
     },
     out: {
       type: 'console'

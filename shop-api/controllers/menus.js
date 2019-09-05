@@ -9,20 +9,24 @@
  * @apiSuccess {String} type 菜单类型.
  * @apiSuccessExample 成功示例:
  *     {
- *       "id": "3000"
- *       "parentId": "0"
- *       "menu": "goods"
- *       "alias": "商品管理"
- *       "type": "menu"
+ *       "menusInfo": [
+ *       	{
+ *       		"id": "3000"
+ *       	 	"parentId": "0"
+ *       	 	"menu": "goods"
+ *       	 	"alias": "商品管理"
+ *       	 	"type": "menu"
+ *        	}
+ *       ]
  *     }
  */
 const { getMenusInfo } = require("../db/menus")
 module.exports.get = async (ctx, next) => {
 	const menusInfo = await getMenusInfo()
 	ctx.body = {
-		code: 1,
+		code: 0,
 		data: {
-			data: menusInfo
+			menusInfo: menusInfo
 		}
 	}
 }

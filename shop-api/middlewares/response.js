@@ -1,15 +1,20 @@
+const { hasPermission } = require("../utils/tools.js")
 module.exports = async function(ctx, next) {
-	let user = ctx.session.user
+	let whitePage = ["/api/login", "/api/test", "/api/user/register"]
 	let flag = false
-	if(user) {
-		user.forEach(item => {
-			if(item.sessionId == ctx.cookies.get('SESSIONID')) {
-				flag = true
-			}
-		})
+	if(ctx.session.token == ctx.cookies.get('token')) {
+		flag = true
 	}
-	if(flag || ctx.path == "/api/login" || ctx.path == "/api/test") {
-		await next()
+	if(flag || whitePage.indexOf(ctx.path) > -1) {
+		let flag = await hasPermission(ctx)
+		if(flag) {
+			await next()
+		}else {
+			ctx.body = {
+				code: -4,
+				msg: "无权限"
+			}
+		}
 	}else {
 		ctx.body = {
 			code: -1,

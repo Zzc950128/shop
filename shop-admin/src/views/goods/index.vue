@@ -1,12 +1,12 @@
 <template>
-	<div class="home">
-		<h2>Shop后台管理</h2>
-		<router-link :to="{ path: '/goods' }">商品管理</router-link>
-	</div>
+    <div class="goods">
+    	<h2>Shop商品管理</h2>
+    	<router-link :to="{ path: '/home' }">回到首頁</router-link>
+    </div>
 </template>
 <script>
 	export default {
-		name: "home",
+		name: "goods",
 		data() {
 			return {
 			}
@@ -22,5 +22,4 @@
 	}
 </script>
 <style lang="scss" scoped>
-	
 </style>

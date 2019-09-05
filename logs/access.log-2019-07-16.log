@@ -1,0 +1,1 @@
+[2019-07-16T18:20:20.758] [INFO] access - ::ffff:127.0.0.1 - - "GET /favicon.ico HTTP/1.1" 404 - "http://127.0.0.1:3000/api/login?username=zzc&password=123456" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"

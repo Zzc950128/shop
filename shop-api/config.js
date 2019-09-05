@@ -2,7 +2,7 @@ const CONF = {
 	port: '3000',
 	sessionConfig: {
 		key: 'SESSION',
-		maxAge: 1000 * 60 * 60 * 24 * 3,
+		maxAge: 1000 * 60 * 60 * 2 * 1,
 		overwrite: true,
 		httpOnly: true,
 		signed: true,

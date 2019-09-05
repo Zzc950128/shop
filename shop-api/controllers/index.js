@@ -13,6 +13,7 @@
 // -1 未登錄
 // -2 缺少參數
 // -3 操作失敗
+// -4 无权限
 
 const fs = require('fs')
 const path = require('path')
