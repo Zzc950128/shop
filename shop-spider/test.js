@@ -2,6 +2,10 @@ const originUrl = "https://kbj51.com/81258.htm"
 const superagent = require('superagent')
 const cheerio = require('cheerio')
 const fs = require('fs')
+const path = require('path')
+const https = require("https");
+const http = require('http')
+const request = require('request')
 
 // 访问次数
 let count = 1
@@ -44,6 +48,37 @@ function getCategory(url, method) {
 		console.log("访问成功")
 		count = 1
 		let $ = cheerio.load(res.text)
-		console.log($.html())
+		// console.log($.html())
+		console.log($("#post_content a").eq(0).attr("href"))
+		saveImgToFile(__dirname+'/img/'+"Lolita1", $("#post_content img").eq(0).attr("src"), "Lolita1")
 	}
+}
+
+function saveImgToFile(dirname, src, name) {
+	if (fs.existsSync(dirname)) {
+		saveImg(dirname, src, name)
+		// request(src).pipe(fs.createWriteStream(dirname+"/"+name+src.substr(src.lastIndexOf("."))))
+    }else {
+    	fs.mkdirSync(dirname)
+    	saveImg(dirname, src, name)
+    	// request(src).pipe(fs.createWriteStream(dirname+"/"+name+src.substr(src.lastIndexOf("."))))
+    }
+}
+function saveImg(dirname, src, name) {
+    try {
+		https.get(src, function(req,res) {
+			let imgData = '';
+			req.setEncoding('binary');
+			req.on('data', function(chunk) {
+				imgData += chunk;
+			})
+			req.on('end', function() {
+				fs.writeFile(dirname+"/"+name+src.substr(src.lastIndexOf(".")), imgData, 'binary', function(err) {
+					console.log('保存图片'+name+'成功')
+				})
+			})
+		})
+    } catch(err) {
+    	console.log(err)
+    }
 }

@@ -11,7 +11,6 @@ let file = fs.readFileSync(__dirname + '/data/'+categoryName+'.json',"utf-8")
 let pageList = JSON.parse(file)
 let pageLength = pageList.length
 // 访问次数
-let articleCount = 1
 let count = 1
 let pageCount = 1
 let url = pageList[pageCount - 1].href
@@ -41,12 +40,10 @@ function getError(url, method, err, res) {
 	if(count == 5) {
 		console.log("停止访问第"+pageCount+"页")
 		articlesErrorData.push({
-			index: articleCount,
 			categoryName: categoryName,
 			page: pageCount,
 			href: url
 		})
-		articleCount++
 		pageCount++
 		count = 1
 		setTimeout(function() {
@@ -73,14 +70,12 @@ function getArticles(url, method) {
 		let articleLength = articleList.length
 		for(let i = 0; i < articleLength; i++) {
 			articlesData.push({
-				index: articleCount,
 				categoryName: categoryName,
 				name: articleList.eq(i).find(".article a").text(),
 				page: pageCount,
 				href: articleList.eq(i).find(".article a").attr("href")
 			})
 		}
-		articleCount++
 		pageCount++
 		count = 1
 		if(pageCount <= pageLength) {
